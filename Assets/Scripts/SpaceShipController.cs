@@ -2,6 +2,9 @@
 // Photon 用の名前空間を参照する
 using Photon.Pun;
 
+/// <summary>
+/// シューティングゲームの自機を制御するコンポーネント
+/// </summary>
 public class SpaceShipController : MonoBehaviour
 {
     /// <summary>動く速さ</summary>

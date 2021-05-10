@@ -2,6 +2,10 @@
 // Photon 用の名前空間を参照する
 using Photon.Pun;
 
+/// <summary>
+/// ホッケーゲームのパドルを制御するコンポーネント
+/// キー入力により左右に動く
+/// </summary>
 public class PaddleController : MonoBehaviour
 {
     /// <summary>動く速さ</summary>

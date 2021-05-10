@@ -2,6 +2,10 @@
 // Photon 用の名前空間を参照する
 using Photon.Pun;
 
+/// <summary>
+/// 弾を発射するためのコンポーネント
+/// Start 時に設定した方向に飛び、そのまま直進して設定した時間が経ったらオブジェクトを破棄する
+/// </summary>
 public class BulletController : MonoBehaviour
 {
     /// <summary>弾が飛ぶ速さ</summary>
