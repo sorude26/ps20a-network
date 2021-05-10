@@ -47,10 +47,10 @@ public class SpaceShipController : MonoBehaviour
     /// </summary>
     void Move()
     {
-        float v = Input.GetAxis("Vertical");
-        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
 
-        Vector2 dir = (Vector2.up * v + Vector2.right * h).normalized;
+        Vector2 dir = new Vector2(h, v).normalized;
         m_rb.velocity = dir * m_moveSpeed;
     }
 }
