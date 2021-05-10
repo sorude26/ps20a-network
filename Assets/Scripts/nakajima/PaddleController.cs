@@ -31,7 +31,7 @@ public class PaddleController : MonoBehaviour
     /// </summary>
     void Move()
     {
-        float h = Input.GetAxis("Horizontal");
+        float h = Input.GetAxisRaw("Horizontal");
 
         Vector2 dir = (Vector2.right * h).normalized;
         m_rb.velocity = dir * m_moveSpeed;
