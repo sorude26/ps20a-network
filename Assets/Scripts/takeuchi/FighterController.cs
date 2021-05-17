@@ -88,4 +88,14 @@ public class FighterController : MonoBehaviour
             m_lastHorizontalInput = m_h;
         }
     }
+
+    [PunRPC]
+    void Hit(Vector3 attackVector)
+    {
+        Debug.Log("Hit");
+        if (m_view && m_view.IsMine)
+        {
+            m_rb.AddForce(attackVector, ForceMode2D.Impulse);
+        }
+    }
 }
