@@ -15,6 +15,8 @@ public class FighterController : MonoBehaviour
     float m_lastHorizontalInput = 1f;
     PhotonView m_view = null;
 
+    [SerializeField] float isGroundLine;
+
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
@@ -30,7 +32,7 @@ public class FighterController : MonoBehaviour
 
         FlipX(m_h);
 
-        if (Input.GetButtonDown("Jump") && m_isGrounded)
+        if (Input.GetButtonDown("Jump") && IsGround())
         {
             m_rb.AddForce(Vector2.up * m_jumpPower, ForceMode2D.Impulse);
         }
@@ -57,21 +59,32 @@ public class FighterController : MonoBehaviour
         m_rb.AddForce(m_movePower * m_h * Vector2.right, ForceMode2D.Force);
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        // 手抜き接地判定。このオブジェクトにトリガーがもう一つ付いてしまうと使えない。その場合は BoxCast などを使って接地判定をする。
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            m_isGrounded = true;
-        }
-    }
+    //void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    // 手抜き接地判定。このオブジェクトにトリガーがもう一つ付いてしまうと使えない。その場合は BoxCast などを使って接地判定をする。
+    //    if (collision.gameObject.CompareTag("Ground"))
+    //    {
+    //        m_isGrounded = true;
+    //    }
+    //}
 
-    void OnTriggerExit2D(Collider2D collision)
+    //void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Ground"))
+    //    {
+    //        m_isGrounded = false;
+    //    }
+    //}
+
+    bool IsGround()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            m_isGrounded = false;
-        }
+        Vector2 stat = this.gameObject.transform.position;
+        Vector2 end = stat + Vector2.down * isGroundLine;
+        Debug.DrawLine(stat, end);
+        bool isGround = Physics2D.Linecast(stat, end);
+        string isGroundLog = isGround.ToString();
+        Debug.Log(isGroundLog);
+        return isGround;
     }
 
     void FlipX(float horizontalInput)
