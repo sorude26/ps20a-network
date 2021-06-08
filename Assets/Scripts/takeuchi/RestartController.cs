@@ -7,11 +7,6 @@ using Photon.Pun;
 [RequireComponent(typeof(NetworkGameManager))]
 public class RestartController : MonoBehaviourPunCallbacks
 {
-    private void Start()
-    {
-       
-    }
-
     public void RestartSystem()
     {
         PhotonNetwork.LeaveRoom();
