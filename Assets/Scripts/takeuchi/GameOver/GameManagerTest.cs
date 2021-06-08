@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Realtime;    // IOnEventCallback を使うため
-using ExitGames.Client.Photon;  // EventData を使うため
 using Photon.Pun;   // PhotonNetwork を使うため
+using Photon.Realtime;  // RaiseEventOptions/ReceiverGroup を使うため
+using ExitGames.Client.Photon;  // SendOptions を使うため
 
 public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 {
@@ -12,13 +12,13 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     enum GameStatus
     {
         Playing = 1,
-        GameEnd = 10,
+        IDied = 10,
         Game_Win = 11,
         Game_Lose = 12
     }
     [SerializeField] GameStatus gamestatus = GameStatus.Playing;
 
-    int numberOfLivingPlayer = 1;
+    int numberOfLivingPlayer = 2;
 
     GameManagerTest masterGameManager;
     List<GameManagerTest> gameManagerList = new List<GameManagerTest>();
@@ -26,15 +26,6 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     private void Start()
     {
         m_view = GetComponent<PhotonView>();
-    }
-
-    private void Update()
-    {
-        if (gamestatus == GameStatus.GameEnd)
-        {
-            PlayerDied();
-            gamestatus = GameStatus.Playing;
-        }
     }
 
     /// <summary>
@@ -78,15 +69,24 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         numberOfLivingPlayer--;
 
-        //生きているプレイヤーが1人かつ、自分がゲーム中の時
-        if (numberOfLivingPlayer == 1 && gamestatus == GameStatus.Playing)
+
+        if (numberOfLivingPlayer == 1 && gamestatus == GameStatus.Playing)      //生きているプレイヤーが1人かつ、自分がゲーム中の時
         {
             Debug.Log("You Win!!");
         }
     }
 
-    public void OnEvent(EventData photonEvent)
+    public void OnEvent(EventData e)
     {
-        throw new System.NotImplementedException();
+        if ((int)e.Code == 150)     //こっちは死んだよって言われたら
+        {
+            AnotherPlayerDied();
+        }
     }
+    /*
+     *  ◆暫定イベントコード一覧
+
+     *  ・150 = 送信したプレイヤーが死んだ
+     * 
+     */
 }
