@@ -883,20 +883,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 357168910}
     m_Modifications:
-    - target: {fileID: 1250390395860237510, guid: 848e4181644c2634c9fc590bc2a0d9ee,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1250390395860237513, guid: 848e4181644c2634c9fc590bc2a0d9ee,
         type: 3}
       propertyPath: m_Name
       value: Fighter
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250390395860237517, guid: 848e4181644c2634c9fc590bc2a0d9ee,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1250390395860237517, guid: 848e4181644c2634c9fc590bc2a0d9ee,
         type: 3}
@@ -915,11 +905,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1250390395860237517, guid: 848e4181644c2634c9fc590bc2a0d9ee,
         type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250390395860237517, guid: 848e4181644c2634c9fc590bc2a0d9ee,
-        type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
@@ -932,6 +917,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250390395860237517, guid: 848e4181644c2634c9fc590bc2a0d9ee,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250390395860237517, guid: 848e4181644c2634c9fc590bc2a0d9ee,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1250390395860237517, guid: 848e4181644c2634c9fc590bc2a0d9ee,
         type: 3}
@@ -952,11 +947,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.451
-      objectReference: {fileID: 0}
-    - target: {fileID: 7700198479583593816, guid: 848e4181644c2634c9fc590bc2a0d9ee,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 848e4181644c2634c9fc590bc2a0d9ee, type: 3}
