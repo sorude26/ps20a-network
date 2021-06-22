@@ -128,6 +128,9 @@ MonoBehaviour:
   m_jumpPower: 65
   m_jumpDump: 0
   isGroundLine: 0.6
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!70 &1250390395860237516
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
