@@ -1055,7 +1055,7 @@ PrefabInstance:
     - target: {fileID: 5909570378241879086, guid: 6fff912c2ac597e499d2044dd512161a,
         type: 3}
       propertyPath: m_Name
-      value: GameZoon
+      value: GameZone
       objectReference: {fileID: 0}
     - target: {fileID: 5909570378241879086, guid: 6fff912c2ac597e499d2044dd512161a,
         type: 3}
