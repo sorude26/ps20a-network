@@ -127,6 +127,7 @@ MonoBehaviour:
   m_movePower: 40
   m_jumpPower: 65
   m_jumpDump: 0
+  isGroundLine: 0.6
 --- !u!70 &1250390395860237516
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -150,7 +151,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1250390395860237513}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -210,7 +211,7 @@ MonoBehaviour:
   - {fileID: 1250390395860237511}
   - {fileID: 1250390395860237504}
   - {fileID: 1250390395860237505}
-  sceneViewId: 0
+  sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &1250390395860237511
@@ -398,6 +399,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 0
+  sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
