@@ -9,6 +9,8 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     PhotonView m_view = null;
 
+    public const byte MoveUnitsToTargetPositionEventCode = 150;
+
     enum GameStatus
     {
         Playing = 1,
@@ -53,11 +55,7 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     public void PlayerDied()
     {
         gamestatus = GameStatus.Game_Lose;
-
-        foreach (var gameManager in gameManagerList)
-        {
-            gameManager.AnotherPlayerDied();
-        }
+        SendMoveUnitsToTargetPositionEvent();
         Debug.Log("You Lose...");
     }
 
@@ -68,12 +66,17 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     public void AnotherPlayerDied()
     {
         numberOfLivingPlayer--;
-
-
         if (numberOfLivingPlayer == 1 && gamestatus == GameStatus.Playing)      //生きているプレイヤーが1人かつ、自分がゲーム中の時
         {
             Debug.Log("You Win!!");
         }
+    }
+
+    public void SendMoveUnitsToTargetPositionEvent()
+    {
+        object[] content = new object[] { new Vector3(10.0f, 2.0f, 5.0f), 1, 2, 5, 10 }; // Array contains the target position and the IDs of the selected units
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others }; // You would have to set the Receivers to All in order to receive this event on the local client as well
+        PhotonNetwork.RaiseEvent(MoveUnitsToTargetPositionEventCode, null, raiseEventOptions, SendOptions.SendReliable);
     }
 
     public void OnEvent(EventData e)
