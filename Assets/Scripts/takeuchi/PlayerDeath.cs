@@ -14,6 +14,8 @@ public class PlayerDeath : MonoBehaviour
 
     FighterController Player;
 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,7 @@ public class PlayerDeath : MonoBehaviour
             {
                 Debug.Log("死んだ");
                 m_PlayerDeath = true;
+                GameOvaer();
             }
             
         }
@@ -43,6 +46,6 @@ public class PlayerDeath : MonoBehaviour
     /// </summary>
     void GameOvaer()
     {
-
+        GameManagerTest.GameEvent(EventCodes.IDied);
     }
 }
