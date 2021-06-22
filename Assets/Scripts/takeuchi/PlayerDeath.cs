@@ -35,7 +35,7 @@ public class PlayerDeath : MonoBehaviour
             {
                 Debug.Log("死んだ");
                 m_PlayerDeath = true;
-                GameOvaer();
+                GameOver();
             }
             
         }
@@ -44,7 +44,7 @@ public class PlayerDeath : MonoBehaviour
     /// <summary>
     /// 自分が落ちた時に呼び出す
     /// </summary>
-    void GameOvaer()
+    void GameOver()
     {
         GameManagerTest.GameEvent(EventCodes.IDied);
     }

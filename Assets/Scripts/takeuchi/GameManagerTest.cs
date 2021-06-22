@@ -10,7 +10,10 @@ using ExitGames.Client.Photon;  // SendOptions を使うため
 /// </summary>
 public enum EventCodes
 {
-    IDied = 150 //私は死んだ
+    /// <summary>
+    /// playerが死んだ時のコード
+    /// </summary>
+    IDied = 150 
 
 }
 public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
