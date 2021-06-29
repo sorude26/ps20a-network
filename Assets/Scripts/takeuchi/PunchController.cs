@@ -4,14 +4,17 @@ using Photon.Pun;
 
 public class PunchController : MonoBehaviour
 {
-    [SerializeField] float m_punchPower = 5f;
+    float m_punchPower = 5f;
     PhotonView m_view = null;
 
     void Start()
     {
         m_view = GetComponent<PhotonView>();
     }
-
+    public void SetPower(float power)
+    {
+        m_punchPower = power;
+    }
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (m_view && m_view.IsMine && collision.gameObject.CompareTag("Player"))
