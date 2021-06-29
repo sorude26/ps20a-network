@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;  
+using ExitGames.Client.Photon;
 
 
 public class PlayerDeath : MonoBehaviour
@@ -11,6 +13,8 @@ public class PlayerDeath : MonoBehaviour
     public bool m_PlayerDeath = false;
 
     FighterController Player;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +35,7 @@ public class PlayerDeath : MonoBehaviour
             {
                 Debug.Log("死んだ");
                 m_PlayerDeath = true;
+                GameOver();
             }
             
         }
@@ -39,8 +44,8 @@ public class PlayerDeath : MonoBehaviour
     /// <summary>
     /// 自分が落ちた時に呼び出す
     /// </summary>
-    void GameOvaer()
+    void GameOver()
     {
-
+        GameManagerTest.GameEvent(EventCodes.IDied);
     }
 }

@@ -5,20 +5,25 @@ using Photon.Pun;   // PhotonNetwork を使うため
 using Photon.Realtime;  // RaiseEventOptions/ReceiverGroup を使うため
 using ExitGames.Client.Photon;  // SendOptions を使うため
 
+/// <summary>
+/// イベントコード一覧
+/// </summary>
+public enum EventCodes
+{
+    /// <summary>
+    /// playerが死んだ時のコード
+    /// </summary>
+    IDied = 150 
+
+}
 public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 {
+    static GameManagerTest m_instance;
     PhotonView m_view = null;
 
     public const byte eventCode = 150;
 
-    /// <summary>
-    /// イベントコード一覧
-    /// </summary>
-    public enum EventCodes
-    {
-        IDied = 150　//私は死んだ
-
-    }
+    
 
 
     enum GameStatus
@@ -34,6 +39,11 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 
     GameManagerTest masterGameManager;
     List<GameManagerTest> gameManagerList = new List<GameManagerTest>();
+
+    private void Awake()
+    {
+        m_instance = this;
+    }
 
     private void Start()
     {
@@ -70,19 +80,19 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// <summary>
     /// イベントを他のユーザーに送信する関数
     /// </summary>
-    public void GameEvent(EventCodes eventCode)
+    public static void GameEvent(EventCodes eventCode)
     {
         switch (eventCode)
         {
             case EventCodes.IDied:
-                gamestatus = GameStatus.Game_Lose;
+                m_instance.gamestatus = GameStatus.Game_Lose;
                 Debug.Log("You Lose...");
                 break;
             default:
                 break;
         }
 
-        SendEvent((byte)eventCode);
+        m_instance.SendEvent((byte)eventCode);
     }
 
     /// <summary>
