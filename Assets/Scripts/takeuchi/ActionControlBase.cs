@@ -31,6 +31,7 @@ public class ActionControlBase : MonoBehaviour
         m_punch.SetPower(power);
         if (m_anim)
             m_anim.SetBool("Punch",true);
+        m_rb.AddForce(Vector2.right * this.transform.localScale.x * power, ForceMode2D.Impulse);
     }
     /// <summary>
     /// 強攻撃
@@ -41,7 +42,7 @@ public class ActionControlBase : MonoBehaviour
         m_punch.SetPower(power);
         if (m_anim)
             m_anim.SetBool("Punch", true);
-        m_rb.AddForce(Vector2.right * this.transform.localScale.x * power, ForceMode2D.Impulse);
+        m_rb.AddForce(Vector2.right * this.transform.localScale.x * power * power, ForceMode2D.Impulse);
     }
     /// <summary>
     /// 被ダメージ
@@ -50,5 +51,10 @@ public class ActionControlBase : MonoBehaviour
     public virtual void Hit(Vector3 attackVector)
     {
         m_rb.AddForce(attackVector, ForceMode2D.Impulse);
+    }
+    public virtual void AttackEnd()
+    {
+        if (m_anim)
+            m_anim.SetBool("Punch", false);
     }
 }
