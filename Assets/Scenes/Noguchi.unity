@@ -285,7 +285,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 150, y: 100}
+  m_AnchoredPosition: {x: 150, y: 56.97}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &298788028
@@ -332,7 +332,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1889507236}
-        m_MethodName: PlayerDied
+        m_MethodName: Test
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1117,6 +1117,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b09115bc7cf839b448b329b0d06f9d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverTextObject: {fileID: 6203930558765163503, guid: 127a960e647e49f4d8740ae4d2e20435,
+    type: 3}
+  gameOverTextPositon: {x: 0, y: 0, z: 0}
+  canvas: {fileID: 2049021195}
   gamestatus: 1
 --- !u!1 &1911173485
 GameObject:
