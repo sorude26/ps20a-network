@@ -16,6 +16,7 @@ public class FighterController : MonoBehaviour
     PhotonView m_view = null;
 
     [SerializeField] float isGroundLine;
+    [SerializeField] LayerMask groundLayer = ~0;
 
     void Start()
     {
@@ -81,7 +82,7 @@ public class FighterController : MonoBehaviour
         Vector2 stat = this.gameObject.transform.position;
         Vector2 end = stat + Vector2.down * isGroundLine;
         Debug.DrawLine(stat, end);
-        bool isGround = Physics2D.Linecast(stat, end);
+        bool isGround = Physics2D.Linecast(stat, end,groundLayer);
         string isGroundLog = isGround.ToString();
         Debug.Log(isGroundLog);
         return isGround;

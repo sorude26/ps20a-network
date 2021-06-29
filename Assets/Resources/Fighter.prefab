@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 1250390395860237511}
   - component: {fileID: 1250390395860237504}
   - component: {fileID: 1250390395860237505}
+  - component: {fileID: -5258383040440172469}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Player
@@ -128,6 +129,9 @@ MonoBehaviour:
   m_jumpPower: 65
   m_jumpDump: 0
   isGroundLine: 0.6
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!70 &1250390395860237516
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -211,7 +215,7 @@ MonoBehaviour:
   - {fileID: 1250390395860237511}
   - {fileID: 1250390395860237504}
   - {fileID: 1250390395860237505}
-  sceneViewId: 1
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &1250390395860237511
@@ -267,6 +271,19 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
+--- !u!114 &-5258383040440172469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250390395860237513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dcdc1a042b5ccb4bb96d070ed678723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayerDeath: 0
 --- !u!1 &1250390396267587459
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +416,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 2
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
