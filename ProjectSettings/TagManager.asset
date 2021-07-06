@@ -7,7 +7,6 @@ TagManager:
   - Enemy
   - Ground
   - Bullet
-  - GameZoon
   - GameZone
   layers:
   - Default

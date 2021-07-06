@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+/// <summary>
+/// Resouce内の"Stone"プレハブを生成し、指定した方向にに飛ばすクラス
+/// </summary>
 public class StoneThrowing : MonoBehaviourPunCallbacks
 {
-
-    /// <summary>
-    /// 投げる石のオブジェクト
-    /// </summary>
-    [SerializeField] GameObject stone;
 
     /// <summary>
     /// 石のリジッドボディ
@@ -21,22 +19,25 @@ public class StoneThrowing : MonoBehaviourPunCallbacks
     /// </summary>
     [SerializeField] float throwPower = 1.0f;
 
+    /// <summary>
+    /// 投げる角度
+    /// </summary>
     [SerializeField] Vector2 throwDirection = new Vector2(1, 1);
-
-    [SerializeField] Transform CreatePos;
 
     /// <summary>
     /// 投げる向き　true: 右　false:左
     /// </summary>
     public bool sideways = true;
 
-    PhotonView m_view;
+    /// <summary>
+    /// 投げるキャラクターオブジェクト
+    /// </summary>
+    [SerializeField] GameObject producer;
 
-    private void Start()
-    {
-        m_view = GetComponent<PhotonView>();
-    }
-
+    /// <summary>
+    /// 投げる向き
+    /// </summary>
+    float producerScale;
 
     [PunRPC]
     /// <summary>
@@ -44,11 +45,12 @@ public class StoneThrowing : MonoBehaviourPunCallbacks
     /// </summary>
     public void ThrowStone()
     {
-        if ((sideways && throwDirection.x < 0) || (!sideways && throwDirection.x > 0))
-        {
-            throwDirection.x *= -1;
-        }
+        producerScale = producer.transform.localScale.x;
+        Vector3 throwSetteing = throwDirection * throwPower;
+        throwSetteing.x *= producerScale >= 0 ? 1.0f : -1.0f;
 
-        GameObject stoneInstance = PhotonNetwork.Instantiate("Stone",Vector3.zero,Quaternion.identity);
+        GameObject stoneInstance = PhotonNetwork.Instantiate("Stone", transform.localPosition, Quaternion.identity);
+        stoneRb = stoneInstance.GetComponent<Rigidbody2D>();
+        stoneRb.AddForce(throwSetteing, ForceMode2D.Impulse);
     }
 }

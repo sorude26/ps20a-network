@@ -1,39 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Photon.Pun;
 using UnityEngine;
-using Photon.Pun;
 
 public class Stone : MonoBehaviourPunCallbacks
 {
 
-    [SerializeField] float m_punchPower = 10f;
-    PhotonView m_view = null;
+    [SerializeField] float punchPower = 10f;
+    PhotonView view = null;
 
     void Start()
     {
-        m_view = GetComponent<PhotonView>();
+        view = GetComponent<PhotonView>();
     }
     public void SetPower(float power)
     {
-        m_punchPower = power;
+        punchPower = power;
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (m_view && !m_view.IsMine && collision.gameObject.CompareTag("Player"))
+        if (view && !view.IsMine && collision.gameObject.CompareTag("Player"))
         {
             PhotonView collisionView = collision.GetComponent<PhotonView>();
             Vector3 dir = collision.transform.position - this.transform.position;
-
-            collision.GetComponent<ActionControlBase>().Hit(dir.normalized * m_punchPower);
-            Debug.Log(dir.normalized * m_punchPower);
-
+            collision.GetComponent<ActionControlBase>().Hit(dir.normalized * punchPower);
+            Debug.Log(dir.normalized * punchPower);
         }
-
-        if (collision.tag == "GameZoon")
+        if (collision.tag == "GameZone")
         {
             Destroy(this.gameObject);
             Destroy(this);
         }
     }
-
 }
