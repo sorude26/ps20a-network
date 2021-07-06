@@ -6,7 +6,7 @@ using Photon.Pun;
 public class Stone : MonoBehaviourPunCallbacks
 {
 
-    float m_punchPower = 10f;
+    [SerializeField] float m_punchPower = 10f;
     PhotonView m_view = null;
 
     void Start()
@@ -21,17 +21,12 @@ public class Stone : MonoBehaviourPunCallbacks
     {
         if (m_view && !m_view.IsMine && collision.gameObject.CompareTag("Player"))
         {
-
+            PhotonView collisionView = collision.GetComponent<PhotonView>();
             Vector3 dir = collision.transform.position - this.transform.position;
+
             collision.GetComponent<ActionControlBase>().Hit(dir.normalized * m_punchPower);
-            /*
-            PhotonView view = collision.gameObject.GetComponent<PhotonView>();
-            if (view)
-            {
-                Vector3 dir = view.transform.position - this.transform.position;
-                view.RPC("Hit", RpcTarget.All, dir.normalized * m_punchPower);
-            }
-            */
+            Debug.Log(dir.normalized * m_punchPower);
+
         }
 
         if (collision.tag == "GameZoon")

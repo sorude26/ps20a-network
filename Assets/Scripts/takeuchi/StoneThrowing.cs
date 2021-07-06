@@ -49,17 +49,6 @@ public class StoneThrowing : MonoBehaviourPunCallbacks
             throwDirection.x *= -1;
         }
 
-        //GameObject stoneInstance = Instantiate(stone);
         GameObject stoneInstance = PhotonNetwork.Instantiate("Stone",Vector3.zero,Quaternion.identity);
-        //stoneInstance.transform.position = CreatePos.position;
-        
-        /*
-        stoneRb = stoneInstance.GetComponent<Rigidbody2D>();
-        stoneRb.AddForce(throwDirection * throwPower, ForceMode2D.Impulse);
-        if (m_view && m_view.IsMine)
-        {
-            m_view.RPC("ThrowStone", RpcTarget.Others);
-        }
-        */
     }
 }
