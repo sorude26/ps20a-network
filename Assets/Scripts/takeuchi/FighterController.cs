@@ -35,6 +35,7 @@ public class FighterController : MonoBehaviour
         if (!m_view || !m_view.IsMine) return;      // 自分が生成したものだけ処理する
 
         m_h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
 
         FlipX(m_h);
 
@@ -43,16 +44,13 @@ public class FighterController : MonoBehaviour
             if (IsGround())
             {
                 m_airJumpCount = m_maxAirJumpCount;
+                m_action.Jump(m_jumpPower);
             }
             else if (m_airJumpCount > 0)
             {
                 m_airJumpCount--;
+                m_action.Jump(m_jumpPower * 1.2f);
             }
-            else
-            {
-                return;
-            }
-            m_action.Jump(m_jumpPower);
         }
 
         if (!Input.GetButton("Jump"))
@@ -68,11 +66,34 @@ public class FighterController : MonoBehaviour
 
         if (Input.GetButtonDown("LightAttack"))
         {
-            m_action.LightAttack(m_lightAttackPower);
+            if (v < 0)//上下入力によって技を分岐させる
+            {
+                m_action.LightAttackD(m_lightAttackPower);
+            }
+            else if (v > 0)
+            {
+                m_action.LightAttackU(m_lightAttackPower);
+            }
+            else
+            {
+                m_action.LightAttack(m_lightAttackPower);
+            }
         }
         else if (Input.GetButtonDown("StrongAttack"))
         {
-            m_action.StrongAttack(m_strongAttackPower);
+            if (v < 0)
+            {
+                m_action.StrongAttackD(m_strongAttackPower);
+            }
+            else if (v > 0 && m_airJumpCount >= 0)
+            {
+                m_airJumpCount--;
+                m_action.StrongAttackU(m_strongAttackPower);
+            }
+            else
+            {
+                m_action.StrongAttack(m_strongAttackPower);
+            }
         }
     }
 
