@@ -29,7 +29,7 @@ public class PlayerDeath : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "GameZoon")
+        if (collision.gameObject.tag == "GameZone")
         {
             if (m_view.IsMine)
             {
