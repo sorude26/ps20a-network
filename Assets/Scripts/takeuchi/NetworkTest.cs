@@ -119,6 +119,8 @@ public class NetworkTest : MonoBehaviourPunCallbacks
             Debug.Log("Closing Room");
             PhotonNetwork.CurrentRoom.IsOpen = false;
 
+            //　ここで呼ぶと後から入った人がCameraTargetSetをよんだ後に最初にいたプレイヤーのファイターが同期されるため
+            //  変更予定
             CameraTargetSet();
             managerTest.SendEvent(151);
         }
