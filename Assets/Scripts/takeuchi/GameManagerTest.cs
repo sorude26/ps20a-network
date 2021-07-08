@@ -13,11 +13,14 @@ public enum EventCodes
     /// <summary>
     /// playerが死んだ時のコード
     /// </summary>
-    IDied = 150 
+    IDied = 150 ,
+    waiting = 151,
 
 }
 public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 {
+
+    [SerializeField] NetworkTest networkTest = null;
     static GameManagerTest m_instance;
     PhotonView m_view = null;
 
@@ -120,15 +123,32 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     }
 
     /// <summary>
+    /// イベント送信処理
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="eventCode">コード</param>
+    /// <param name="data">データ</param>
+    public void SendEvent(byte eventCode, Object data)
+    {
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others }; 
+        PhotonNetwork.RaiseEvent(eventCode, data, raiseEventOptions, SendOptions.SendReliable);
+    }
+
+    /// <summary>
     /// イベント受信
     /// </summary>
     /// <param name="e">受け取るイベント</param>
     public void OnEvent(EventData e)
     {
-        if ((byte)e.Code == (byte)EventCodes.IDied)     //こっちは死んだよって言われたら
+        if (e.Code == (byte)EventCodes.IDied)     //こっちは死んだよって言われたら
         {
             AnotherPlayerDied();
         }
+        else if (e.Code == (byte)EventCodes.waiting)
+        {
+            networkTest.CameraTargetSet();
+        }
+
     }
 
 }
