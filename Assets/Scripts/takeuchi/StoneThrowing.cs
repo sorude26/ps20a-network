@@ -39,6 +39,11 @@ public class StoneThrowing : MonoBehaviourPunCallbacks
     /// </summary>
     float producerScale;
 
+    /// <summary>
+    /// 発射位置
+    /// </summary>
+    [SerializeField] Transform throwPos;
+
     [PunRPC]
     /// <summary>
     /// 石を投げる
@@ -51,6 +56,21 @@ public class StoneThrowing : MonoBehaviourPunCallbacks
 
         GameObject stoneInstance = PhotonNetwork.Instantiate("Stone", transform.localPosition, Quaternion.identity);
         stoneRb = stoneInstance.GetComponent<Rigidbody2D>();
+        stoneRb.AddForce(throwSetteing, ForceMode2D.Impulse);
+    }
+
+    [PunRPC]
+    /// <summary>
+    /// 石を投げる
+    /// </summary>
+    public void ThrowStone(Vector2 throwDirection, float throwPower)
+    {
+        float producerScale = producer.transform.localScale.x;
+        Vector3 throwSetteing = throwDirection * throwPower;
+        throwSetteing.x *= producerScale >= 0 ? 1.0f : -1.0f;
+
+        GameObject stoneInstance = PhotonNetwork.Instantiate("Stone", throwPos.position, Quaternion.identity);
+        var stoneRb = stoneInstance.GetComponent<Rigidbody2D>();
         stoneRb.AddForce(throwSetteing, ForceMode2D.Impulse);
     }
 }
