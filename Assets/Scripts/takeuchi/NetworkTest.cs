@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 // Photon 用の名前空間を参照する
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+
 
 public class NetworkTest : MonoBehaviourPunCallbacks
 {
@@ -120,14 +122,21 @@ public class NetworkTest : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsOpen = false;
 
             //　ここで呼ぶと後から入った人がCameraTargetSetをよんだ後に最初にいたプレイヤーのファイターが同期されるため
-            //  変更予定
-            CameraTargetSet();
-            managerTest.SendEvent(151);
+            
+            StartCoroutine("GameStart");
         }
         else
         {
             Debug.Log("waiting......");
         }
+
+    }
+
+    IEnumerator GameStart()
+    {
+        yield return new WaitForSeconds(1);
+        CameraTargetSet();
+        managerTest.SendEvent(151);
 
     }
 
@@ -141,7 +150,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         
         foreach (var item in objects)
         {
-            targetGroup.AddMember(item.transform, 1, 1);
+            targetGroup.AddMember(item.transform, 2, 1);
         }
     }
 
@@ -293,4 +302,6 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     {
         Debug.Log("OnCustomAuthenticationFailed");
     }
+
+    
 }
