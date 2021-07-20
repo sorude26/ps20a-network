@@ -227,6 +227,8 @@ GameObject:
   m_Component:
   - component: {fileID: 204569781}
   - component: {fileID: 204569782}
+  - component: {fileID: 204569783}
+  - component: {fileID: 204569784}
   m_Layer: 0
   m_Name: Director
   m_TagString: Untagged
@@ -278,7 +280,7 @@ PlayableDirector:
   - key: {fileID: -6132822778587090454, guid: 0bc3f6922da72c641a53047449b02c9c, type: 2}
     value: {fileID: 613439029}
   - key: {fileID: 8261720447612770903, guid: 0bc3f6922da72c641a53047449b02c9c, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 204569783}
   - key: {fileID: 7184137631981995961, guid: 0bc3f6922da72c641a53047449b02c9c, type: 2}
     value: {fileID: 1178245083}
   - key: {fileID: -3369411476214482348, guid: 0bc3f6922da72c641a53047449b02c9c, type: 2}
@@ -292,6 +294,49 @@ PlayableDirector:
     - 1ea8c2dbed4f050479749d146fd886ad: {fileID: 1923691579}
     - 59bfc962bb7715f48bd18cd0bfebee35: {fileID: 1400917669}
     - d4791d5c8a0a7d141b129fbba38f5a53: {fileID: 267216446}
+--- !u!114 &204569783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204569780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 09ab404aee3c08a4fab74fc8627a4f66, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 204569784}
+          m_MethodName: set_PlayerOperation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+--- !u!114 &204569784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204569780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fb804f8a1fa6bc4fb3a4e5ede331e0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_gameStartTimeline: {fileID: 204569782}
+  m_playerOperation: 0
 --- !u!1001 &253671810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1659,6 +1704,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b09115bc7cf839b448b329b0d06f9d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverTextObject: {fileID: 0}
+  gameOverTextPositon: {x: 0, y: 0, z: 0}
+  canvas: {fileID: 0}
   gamestatus: 1
 --- !u!114 &2144984902
 MonoBehaviour:
