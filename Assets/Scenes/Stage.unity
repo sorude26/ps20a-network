@@ -697,6 +697,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkTest: {fileID: 2144984904}
+  gameOverTextObject: {fileID: 0}
+  gameOverTextPositon: {x: 0, y: 0, z: 0}
+  canvas: {fileID: 0}
   gamestatus: 1
 --- !u!114 &2144984902
 MonoBehaviour:

@@ -14,11 +14,13 @@ public enum EventCodes
     /// <summary>
     /// playerが死んだ時のコード
     /// </summary>
-    IDied = 150
+    IDied = 150,
+    targetSet = 151
 
 }
 public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 {
+    [SerializeField] NetworkTest networkTest = null;
     static GameManagerTest m_instance;
     PhotonView m_view = null;
 
@@ -147,6 +149,10 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         if ((byte)e.Code == (byte)EventCodes.IDied)     //こっちは死んだよって言われたら
         {
             AnotherPlayerDied();
+        }
+        else if (e.Code == (byte)EventCodes.targetSet)
+        {
+            networkTest.CameraTargetSet();
         }
     }
 

@@ -144,7 +144,7 @@ public class GM : MonoBehaviour
         {
             AnotherPlayerDied();
         }
-        else if (e.Code == (byte)EventCodes.waiting)
+        else if (e.Code == (byte)EventCodes.targetSet)
         {
             networkTest.CameraTargetSet();
         }
