@@ -8,10 +8,16 @@ public class FighterController : MonoBehaviour
     [SerializeField] float m_movePower = 5f;
     [SerializeField] float m_jumpPower = 5f;
     [SerializeField] float m_jumpDump = 0.8f;
+    [Tooltip("多段ジャンプ最大回数")]
+    [SerializeField] int m_maxAirJumpCount = 1;
+    [Tooltip("弱攻撃威力")]
+    [SerializeField] float m_lightAttackPower = 5f;
+    [Tooltip("強攻撃威力")]
+    [SerializeField] float m_strongAttackPower = 8f;
+    [SerializeField] ActionControlBase m_action = null;
     Rigidbody2D m_rb = null;
     float m_h = 0f;
-    bool m_isGrounded = false;
-    Animator m_anim = null;
+    int m_airJumpCount = 0;
     float m_lastHorizontalInput = 1f;
     PhotonView m_view = null;
 
@@ -21,7 +27,6 @@ public class FighterController : MonoBehaviour
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
-        m_anim = GetComponent<Animator>();
         m_view = GetComponent<PhotonView>();
     }
 
@@ -30,12 +35,22 @@ public class FighterController : MonoBehaviour
         if (!m_view || !m_view.IsMine) return;      // 自分が生成したものだけ処理する
 
         m_h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
 
         FlipX(m_h);
 
-        if (Input.GetButtonDown("Jump") && IsGround())
+        if (Input.GetButtonDown("Jump"))
         {
-            m_rb.AddForce(Vector2.up * m_jumpPower, ForceMode2D.Impulse);
+            if (IsGround())
+            {
+                m_airJumpCount = m_maxAirJumpCount;
+                m_action.Jump(m_jumpPower);
+            }
+            else if (m_airJumpCount > 0)
+            {
+                m_airJumpCount--;
+                m_action.Jump(m_jumpPower * 1.2f);
+            }
         }
 
         if (!Input.GetButton("Jump"))
@@ -49,8 +64,41 @@ public class FighterController : MonoBehaviour
             }
         }
 
-        if (m_anim)
-            m_anim.SetBool("Punch", Input.GetButtonDown("Fire1"));
+        if (Input.GetButtonDown("LightAttack"))
+        {
+            if (v < 0)//上下入力によって技を分岐させる
+            {
+                m_action.LightAttackD(m_lightAttackPower);
+            }
+            else if (v > 0)
+            {
+                m_action.LightAttackU(m_lightAttackPower);
+            }
+            else
+            {
+                m_action.LightAttack(m_lightAttackPower);
+            }
+        }
+        else if (Input.GetButtonDown("StrongAttack"))
+        {
+            if (IsGround())
+            {
+                m_airJumpCount = m_maxAirJumpCount;
+            }
+            if (v < 0)
+            {
+                m_action.StrongAttackD(m_strongAttackPower);
+            }
+            else if (v > 0 && m_airJumpCount >= 0)
+            {
+                m_airJumpCount--;
+                m_action.StrongAttackU(m_strongAttackPower);
+            }
+            else
+            {
+                m_action.StrongAttack(m_strongAttackPower);
+            }
+        }
     }
 
     void FixedUpdate()
@@ -59,23 +107,6 @@ public class FighterController : MonoBehaviour
 
         m_rb.AddForce(m_movePower * m_h * Vector2.right, ForceMode2D.Force);
     }
-
-    //void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    // 手抜き接地判定。このオブジェクトにトリガーがもう一つ付いてしまうと使えない。その場合は BoxCast などを使って接地判定をする。
-    //    if (collision.gameObject.CompareTag("Ground"))
-    //    {
-    //        m_isGrounded = true;
-    //    }
-    //}
-
-    //void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Ground"))
-    //    {
-    //        m_isGrounded = false;
-    //    }
-    //}
 
     bool IsGround()
     {
@@ -98,7 +129,6 @@ public class FighterController : MonoBehaviour
                 scale.x *= -1;
                 this.transform.localScale = scale;
             }
-
             m_lastHorizontalInput = m_h;
         }
     }
@@ -109,7 +139,7 @@ public class FighterController : MonoBehaviour
         Debug.Log("Hit");
         if (m_view && m_view.IsMine)
         {
-            m_rb.AddForce(attackVector, ForceMode2D.Impulse);
+            m_action.Hit(attackVector);
         }
     }
 }
