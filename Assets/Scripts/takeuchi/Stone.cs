@@ -21,8 +21,11 @@ public class Stone : MonoBehaviourPunCallbacks
         {
             PhotonView collisionView = collision.GetComponent<PhotonView>();
             Vector3 dir = collision.transform.position - this.transform.position;
-            collision.GetComponent<ActionControlBase>().Hit(dir.normalized * punchPower);
-            Debug.Log(dir.normalized * punchPower);
+            if (collision.GetComponent<ActionControlBase>() != null)
+            {
+                collision.GetComponent<ActionControlBase>().Hit(dir.normalized * punchPower);
+
+            }
         }
         if (collision.tag == "GameZone")
         {
