@@ -4,42 +4,27 @@ using UnityEngine;
 using Photon.Pun;   // PhotonNetwork を使うため
 using Photon.Realtime;  // RaiseEventOptions/ReceiverGroup を使うため
 using ExitGames.Client.Photon;  // SendOptions を使うため
-using UnityEngine.UI;
 
-/// <summary>
-/// イベントコード一覧
-/// </summary>
-public enum EventCodes
-{
-    /// <summary>
-    /// playerが死んだ時のコード
-    /// </summary>
-    IDied = 150,
-    targetSet = 151,
-    createPlayer = 152
+///// <summary>
+///// イベントコード一覧
+///// </summary>
+//public enum EventCodes
+//{
+//    /// <summary>
+//    /// playerが死んだ時のコード
+//    /// </summary>
+//    IDied = 150,
+//    waiting = 151,
 
-}
-public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
+//}
+public class GM : MonoBehaviour
 {
+
     [SerializeField] NetworkTest networkTest = null;
     static GameManagerTest m_instance;
     PhotonView m_view = null;
 
     public const byte eventCode = 150;
-
-    /// <summary>
-    /// ゲームオーバー時に表示するテキストオブジェクト
-    /// </summary>
-    [SerializeField] Text gameOverTextObject;
-    /// <summary>
-    /// ゲームオーバー時に表示するテキストオブジェクトの生成時の表示位置
-    /// </summary>
-    [SerializeField] Vector3 gameOverTextPositon;
-
-    /// <summary>
-    /// UIを表示するためのキャンバス
-    /// </summary>
-    [SerializeField] Canvas canvas;
 
 
 
@@ -60,7 +45,7 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 
     private void Awake()
     {
-        m_instance = this;
+        //m_instance = this;
     }
 
     private void Start()
@@ -91,8 +76,7 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// </summary>
     public void Test()
     {
-        //GameEvent(EventCodes.IDied);
-        AnotherPlayerDied();
+        GameEvent(EventCodes.IDied);
 
     }
 
@@ -103,11 +87,9 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         switch (eventCode)
         {
-
             case EventCodes.IDied:
-                m_instance.gamestatus = GameStatus.Game_Lose;
+                //m_instance.gamestatus = GameStatus.Game_Lose;
                 Debug.Log("You Lose...");
-                m_instance.ShowGameOverText();
                 break;
             default:
                 break;
@@ -126,7 +108,6 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         if (numberOfLivingPlayer == 1 && gamestatus == GameStatus.Playing)      //生きているプレイヤーが1人かつ、自分がゲーム中の時
         {
             Debug.Log("You Win!!");
-            ShowGameOverText();
         }
     }
 
@@ -140,9 +121,11 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(eventCode, null, raiseEventOptions, SendOptions.SendReliable);
     }
+
     /// <summary>
     /// イベント送信処理
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="eventCode">コード</param>
     /// <param name="data">データ</param>
     public void SendEvent(byte eventCode, Object data)
@@ -157,60 +140,16 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// <param name="e">受け取るイベント</param>
     public void OnEvent(EventData e)
     {
-        switch (e.Code)
+        if (e.Code == (byte)EventCodes.IDied)     //こっちは死んだよって言われたら
         {
-            case (byte)EventCodes.IDied:
-                AnotherPlayerDied();
-                break;
-            case (byte)EventCodes.targetSet:
-                networkTest.CameraTargetSet();
-                break;
-            case (byte)EventCodes.createPlayer:
-                networkTest.SpawnPlayer();
-                break;
-            default:
-                break;
-        }
-        if ((byte)e.Code == (byte)EventCodes.IDied)     //こっちは死んだよって言われたら
-        {
+            AnotherPlayerDied();
         }
         else if (e.Code == (byte)EventCodes.targetSet)
         {
+            networkTest.CameraTargetSet();
         }
-    }
-
-    /// <summary>
-    /// ゲームオーバーを伝えるテキストを表示する
-    /// </summary>
-    public void ShowGameOverText()
-    {
-
-        if (!gameOverTextObject)
-        {
-            Debug.Log("ゲームオーバーテキストが設定されていません");
-            return;
-        }
-        GameObject gameOverText = Instantiate(gameOverTextObject.gameObject);
-        gameOverText.transform.SetParent(canvas.transform);
-        gameOverText.transform.localPosition = gameOverTextPositon;
-
-    }
-
-    /// <summary>
-    /// ゲームオーバーを伝えるテキストを表示する
-    /// </summary>
-    public void ShowGameOverText()
-    {
-
-        if (!gameOverTextObject)
-        {
-            Debug.Log("ゲームオーバーテキストが設定されていません");
-            return;
-        }
-        GameObject gameOverText = Instantiate(gameOverTextObject.gameObject);
-        gameOverText.transform.SetParent(canvas.transform);
-        gameOverText.transform.localPosition = gameOverTextPositon;
 
     }
 
 }
+
