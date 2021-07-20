@@ -105,6 +105,10 @@ public class FighterController : MonoBehaviour
         }
         else if (Input.GetButtonDown("StrongAttack"))
         {
+            if (IsGround())
+            {
+                m_airJumpCount = m_maxAirJumpCount;
+            }
             if (v < 0)
             {
                 m_action.StrongAttackD(m_strongAttackPower);

@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;   // PhotonNetwork を使うため
 using Photon.Realtime;  // RaiseEventOptions/ReceiverGroup を使うため
 using ExitGames.Client.Photon;  // SendOptions を使うため
+using UnityEngine.UI;
 
 /// <summary>
 /// イベントコード一覧
@@ -23,7 +24,21 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public const byte eventCode = 150;
 
-    
+    /// <summary>
+    /// ゲームオーバー時に表示するテキストオブジェクト
+    /// </summary>
+    [SerializeField] Text gameOverTextObject;
+    /// <summary>
+    /// ゲームオーバー時に表示するテキストオブジェクトの生成時の表示位置
+    /// </summary>
+    [SerializeField] Vector3 gameOverTextPositon;
+
+    /// <summary>
+    /// UIを表示するためのキャンバス
+    /// </summary>
+    [SerializeField] Canvas canvas;
+
+
 
 
     enum GameStatus
@@ -73,7 +88,8 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// </summary>
     public void Test()
     {
-        GameEvent(EventCodes.IDied);
+        //GameEvent(EventCodes.IDied);
+        AnotherPlayerDied();
 
     }
 
@@ -84,9 +100,11 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         switch (eventCode)
         {
+
             case EventCodes.IDied:
                 m_instance.gamestatus = GameStatus.Game_Lose;
                 Debug.Log("You Lose...");
+                m_instance.ShowGameOverText();
                 break;
             default:
                 break;
@@ -105,6 +123,7 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         if (numberOfLivingPlayer == 1 && gamestatus == GameStatus.Playing)      //生きているプレイヤーが1人かつ、自分がゲーム中の時
         {
             Debug.Log("You Win!!");
+            ShowGameOverText();
         }
     }
 
@@ -129,6 +148,23 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             AnotherPlayerDied();
         }
+    }
+
+    /// <summary>
+    /// ゲームオーバーを伝えるテキストを表示する
+    /// </summary>
+    public void ShowGameOverText()
+    {
+
+        if (!gameOverTextObject)
+        {
+            Debug.Log("ゲームオーバーテキストが設定されていません");
+            return;
+        }
+        GameObject gameOverText = Instantiate(gameOverTextObject.gameObject);
+        gameOverText.transform.SetParent(canvas.transform);
+        gameOverText.transform.localPosition = gameOverTextPositon;
+
     }
 
 }

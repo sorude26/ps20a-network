@@ -8,8 +8,10 @@ using UnityEngine;
 public class ActionControlBase : MonoBehaviour
 {
     [SerializeField] protected PunchController m_punch = null;
+    [SerializeField] protected StoneThrowing m_stoneThrow = null;
     protected Rigidbody2D m_rb = null;
     protected Animator m_anim = null;
+    protected bool m_actionNow;
     private void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
@@ -52,10 +54,13 @@ public class ActionControlBase : MonoBehaviour
     /// <param name="power"></param>
     public virtual void LightAttack(float power)
     {
+        if (m_actionNow) return;
         m_punch.SetPower(power);
         if (m_anim)
-            m_anim.SetBool("Punch",true);
+            m_anim.Play("Punch");
         m_rb.AddForce(Vector2.right * this.transform.localScale.x * power, ForceMode2D.Impulse);
+        m_stoneThrow.ThrowStone(new Vector2(1, 1), power);
+        m_actionNow = true;
     }
     /// <summary>
     /// 上弱攻撃
@@ -63,10 +68,13 @@ public class ActionControlBase : MonoBehaviour
     /// <param name="power"></param>
     public virtual void LightAttackU(float power)
     {
+        if (m_actionNow) return;
         m_punch.SetPower(power);
         if (m_anim)
-            m_anim.SetBool("PunchUp", true);
+            m_anim.Play("PunchUp");
         m_rb.AddForce(Vector2.right * this.transform.localScale.x * power, ForceMode2D.Impulse);
+        m_stoneThrow.ThrowStone(new Vector2(1, 3).normalized * 2f, power);
+        m_actionNow = true;
     }
     /// <summary>
     /// 下弱攻撃
@@ -74,10 +82,13 @@ public class ActionControlBase : MonoBehaviour
     /// <param name="power"></param>
     public virtual void LightAttackD(float power)
     {
+        if (m_actionNow) return;
         m_punch.SetPower(power);
         if (m_anim)
-            m_anim.SetBool("PunchDown", true);
+            m_anim.Play("PunchDown");
         m_rb.AddForce(Vector2.right * this.transform.localScale.x * power, ForceMode2D.Impulse);
+        m_stoneThrow.ThrowStone(new Vector2(1, -1).normalized, power);
+        m_actionNow = true;
     }
     /// <summary>
     /// 強攻撃
@@ -85,10 +96,12 @@ public class ActionControlBase : MonoBehaviour
     /// <param name="power"></param>
     public virtual void StrongAttack(float power)
     {
+        if (m_actionNow) return;
         m_punch.SetPower(power);
         if (m_anim)
-            m_anim.SetBool("StrongPunch", true);
+            m_anim.Play("StrongPunch");
         m_rb.AddForce(Vector2.right * this.transform.localScale.x * power, ForceMode2D.Impulse);
+        m_actionNow = true;
     }
     /// <summary>
     /// 上強攻撃
@@ -96,10 +109,12 @@ public class ActionControlBase : MonoBehaviour
     /// <param name="power"></param>
     public virtual void StrongAttackU(float power)
     {
+        if (m_actionNow) return;
         m_punch.SetPower(power);
         if (m_anim)
-            m_anim.SetBool("PunchUp", true);
-        m_rb.AddForce(Vector2.up * power * 1.5f, ForceMode2D.Impulse);
+            m_anim.Play("PunchUp");
+        m_rb.AddForce(Vector2.up * power * 2f, ForceMode2D.Impulse);
+        m_actionNow = true;
     }
     /// <summary>
     /// 下強攻撃
@@ -107,10 +122,12 @@ public class ActionControlBase : MonoBehaviour
     /// <param name="power"></param>
     public virtual void StrongAttackD(float power)
     {
+        if (m_actionNow) return;
         m_punch.SetPower(power);
         if (m_anim)
-            m_anim.SetBool("PunchDown", true);
-        m_rb.AddForce(Vector2.down * power, ForceMode2D.Impulse);
+            m_anim.Play("PunchDown");
+        m_rb.AddForce(Vector2.down * power * 2f, ForceMode2D.Impulse);
+        m_actionNow = true;
     }
     /// <summary>
     /// 被ダメージ
@@ -125,12 +142,6 @@ public class ActionControlBase : MonoBehaviour
     /// </summary>
     public virtual void AttackEnd()
     {
-        if (m_anim)
-        {
-            m_anim.SetBool("Punch", false);
-            m_anim.SetBool("StrongPunch",false);
-            m_anim.SetBool("PunchUp", false);
-            m_anim.SetBool("PunchDown", false);
-        }
+        m_actionNow = false;
     }
 }
