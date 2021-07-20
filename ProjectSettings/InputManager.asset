@@ -297,7 +297,7 @@ InputManager:
     m_Name: LightAttack
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: j
+    negativeButton: 
     positiveButton: z
     altNegativeButton: 
     altPositiveButton: 
@@ -313,7 +313,7 @@ InputManager:
     m_Name: StrongAttack
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: k
+    negativeButton: 
     positiveButton: x
     altNegativeButton: 
     altPositiveButton: 
