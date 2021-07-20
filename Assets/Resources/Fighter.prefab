@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1178458218356097830}
   - component: {fileID: 8215527126435260105}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: PlayerMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,6 +216,7 @@ MonoBehaviour:
   m_maxAirJumpCount: 1
   m_lightAttackPower: 5
   m_strongAttackPower: 30
+  m_playerMark: {fileID: 198705750491456513}
   m_action: {fileID: -4097168049948244936}
   isGroundLine: 0.6
   groundLayer:

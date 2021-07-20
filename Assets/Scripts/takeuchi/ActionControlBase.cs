@@ -18,6 +18,30 @@ public class ActionControlBase : MonoBehaviour
         m_anim = GetComponent<Animator>();
     }
     /// <summary>
+    /// 歩行
+    /// </summary>
+    public virtual void Walk()
+    {
+        m_anim.SetBool("Walk", true);
+        m_anim.SetBool("Fall", false);
+    }
+    /// <summary>
+    /// 静止
+    /// </summary>
+    public virtual void Stop()
+    {
+        m_anim.SetBool("Walk", false);
+        m_anim.SetBool("Fall", false);
+    }
+    /// <summary>
+    /// 落下中
+    /// </summary>
+    public virtual void Fall()
+    {
+        m_anim.SetBool("Fall", true);
+        m_anim.SetBool("Walk", false);
+    }
+    /// <summary>
     /// ジャンプ
     /// </summary>
     public virtual void Jump(float power)
