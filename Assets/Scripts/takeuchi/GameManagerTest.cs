@@ -15,7 +15,8 @@ public enum EventCodes
     /// playerが死んだ時のコード
     /// </summary>
     IDied = 150,
-    targetSet = 151
+    targetSet = 151,
+    createPlayer = 152
 
 }
 public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
@@ -139,6 +140,16 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(eventCode, null, raiseEventOptions, SendOptions.SendReliable);
     }
+    /// <summary>
+    /// イベント送信処理
+    /// </summary>
+    /// <param name="eventCode">コード</param>
+    /// <param name="data">データ</param>
+    public void SendEvent(byte eventCode, Object data)
+    {
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(eventCode, data, raiseEventOptions, SendOptions.SendReliable);
+    }
 
     /// <summary>
     /// イベント受信
@@ -146,13 +157,25 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// <param name="e">受け取るイベント</param>
     public void OnEvent(EventData e)
     {
+        switch (e.Code)
+        {
+            case (byte)EventCodes.IDied:
+                AnotherPlayerDied();
+                break;
+            case (byte)EventCodes.targetSet:
+                networkTest.CameraTargetSet();
+                break;
+            case (byte)EventCodes.createPlayer:
+                networkTest.SpawnPlayer();
+                break;
+            default:
+                break;
+        }
         if ((byte)e.Code == (byte)EventCodes.IDied)     //こっちは死んだよって言われたら
         {
-            AnotherPlayerDied();
         }
         else if (e.Code == (byte)EventCodes.targetSet)
         {
-            networkTest.CameraTargetSet();
         }
     }
 

@@ -97,41 +97,52 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         }
     }
 
-
     /// <summary>
-    /// プレイヤーを生成する
+    /// 　ルームの人数が最大になるまで待機しておき、最大になったらキャラを生成しゲームを始める
     /// </summary>
-    private void SpawnPlayer()
+    private void Waiting()
     {
-        // プレイヤーをどこに spawn させるか決める
-        int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;    // 自分の ActorNumber を取得する。なお ActorNumber は「1から」入室順に振られる。
-        Debug.Log("My ActorNumber: " + actorNumber);
-        Transform spawnPoint = m_spawnPositions[actorNumber - 1];
-
-        // プレイヤーを生成し、他のクライアントと同期する
-        m_player = PhotonNetwork.Instantiate(m_playerPrefabName, spawnPoint.position, spawnPoint.rotation);
-
         /* **************************************************
          * ルームに参加している人数が最大に達したら部屋を閉じる（参加を締め切る）
          * 部屋を閉じないと、最大人数から減った時に次のユーザーが入ってきてしまう。
          * 現状のコードではユーザーが最大人数から減った際の追加入室を考慮していないため、追加入室させたい場合は実装を変更する必要がある。
          * **************************************************/
+        int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+
         if (actorNumber > PhotonNetwork.CurrentRoom.MaxPlayers - 1)
         {
             Debug.Log("Closing Room");
             PhotonNetwork.CurrentRoom.IsOpen = false;
 
-            //　ここで呼ぶと後から入った人がCameraTargetSetをよんだ後に最初にいたプレイヤーのファイターが同期されるため
-            
+            SpawnPlayer();
+            managerTest.SendEvent(152);
             StartCoroutine("GameStart");
         }
         else
         {
             Debug.Log("waiting......");
         }
-
     }
 
+    /// <summary>
+    /// プレイヤーを生成する
+    /// </summary>
+    public void SpawnPlayer()
+    {
+        // プレイヤーをどこに spawn させるか決める
+        int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;    // 自分の ActorNumber を取得する。なお ActorNumber は「1から」入室順に振られる。
+        Debug.Log("My ActorNumber: " + actorNumber);
+        Transform spawnPoint = m_spawnPositions[actorNumber - 1];
+
+        //// プレイヤーを生成し、他のクライアントと同期する
+        m_player = PhotonNetwork.Instantiate(m_playerPrefabName, spawnPoint.position, spawnPoint.rotation);
+
+
+    }
+    /// <summary>
+    /// １秒後にカメラターゲットセットを自分と対戦相手でよびだす
+    /// </summary>
+    /// <returns></returns>
     IEnumerator GameStart()
     {
         yield return new WaitForSeconds(1);
@@ -209,7 +220,8 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom");
-        SpawnPlayer();
+        //SpawnPlayer();
+        Waiting();
     }
 
     /// <summary>指定した部屋への入室に失敗した時</summary>
