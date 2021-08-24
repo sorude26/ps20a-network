@@ -14,6 +14,8 @@ public class FighterController : MonoBehaviour
     [SerializeField] float m_lightAttackPower = 5f;
     [Tooltip("強攻撃威力")]
     [SerializeField] float m_strongAttackPower = 8f;
+    [Tooltip("プレイヤーのマーク")]
+    [SerializeField] GameObject m_playerMark;
     [SerializeField] ActionControlBase m_action = null;
     Rigidbody2D m_rb = null;
     float m_h = 0f;
@@ -32,12 +34,34 @@ public class FighterController : MonoBehaviour
 
     void Update()
     {
-        if (!m_view || !m_view.IsMine) return;      // 自分が生成したものだけ処理する
+        if (!m_view || !m_view.IsMine)
+        {
+            if (m_playerMark)
+            {
+                m_playerMark.SetActive(false);
+            }
+            return;      // 自分が生成したものだけ処理する
+        }
 
         m_h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
         FlipX(m_h);
+        if (IsGround())
+        {
+            if (m_h == 0)
+            {
+                m_action.Stop();
+            }
+            else
+            {
+                m_action.Walk();
+            }
+        }
+        else
+        {
+            m_action.Fall();
+        }
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -81,6 +105,10 @@ public class FighterController : MonoBehaviour
         }
         else if (Input.GetButtonDown("StrongAttack"))
         {
+            if (IsGround())
+            {
+                m_airJumpCount = m_maxAirJumpCount;
+            }
             if (v < 0)
             {
                 m_action.StrongAttackD(m_strongAttackPower);
@@ -110,8 +138,6 @@ public class FighterController : MonoBehaviour
         Vector2 end = stat + Vector2.down * isGroundLine;
         Debug.DrawLine(stat, end);
         bool isGround = Physics2D.Linecast(stat, end,groundLayer);
-        string isGroundLog = isGround.ToString();
-        Debug.Log(isGroundLog);
         return isGround;
     }
 
