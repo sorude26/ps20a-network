@@ -195,22 +195,4 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         gameOverText.transform.localPosition = gameOverTextPositon;
 
     }
-
-    /// <summary>
-    /// ゲームオーバーを伝えるテキストを表示する
-    /// </summary>
-    public void ShowGameOverText()
-    {
-
-        if (!gameOverTextObject)
-        {
-            Debug.Log("ゲームオーバーテキストが設定されていません");
-            return;
-        }
-        GameObject gameOverText = Instantiate(gameOverTextObject.gameObject);
-        gameOverText.transform.SetParent(canvas.transform);
-        gameOverText.transform.localPosition = gameOverTextPositon;
-
-    }
-
 }
