@@ -195,5 +195,4 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         gameOverText.transform.localPosition = gameOverTextPositon;
 
     }
-
 }

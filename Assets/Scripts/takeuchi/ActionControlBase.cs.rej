@@ -1,0 +1,16 @@
+diff a/Assets/Scripts/takeuchi/ActionControlBase.cs b/Assets/Scripts/takeuchi/ActionControlBase.cs	(rejected hunks)
+@@ -107,12 +107,10 @@
+     /// <param name="power"></param>
+     public virtual void StrongAttackD(float power)
+     {
+-        if (m_actionNow) return;
+         m_punch.SetPower(power);
+         if (m_anim)
+-            m_anim.Play("PunchDown");
+-        m_rb.AddForce(Vector2.down * power * 2f, ForceMode2D.Impulse);
+-        m_actionNow = true;
++            m_anim.SetBool("PunchDown", true);
++        m_rb.AddForce(Vector2.down * power, ForceMode2D.Impulse);
+     }
+     /// <summary>
+     /// 被ダメージ
