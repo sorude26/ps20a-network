@@ -14,10 +14,6 @@ public class ActionFighterA : ActionControlBase
         m_stoneThrow.ThrowStone(new Vector2(1, 1), power);
         m_actionNow = true;
     }
-    /// <summary>
-    /// 上弱攻撃
-    /// </summary>
-    /// <param name="power"></param>
     public override void LightAttackU(float power)
     {
         if (m_actionNow) return;
@@ -28,10 +24,6 @@ public class ActionFighterA : ActionControlBase
         m_stoneThrow.ThrowStone(new Vector2(1, 3).normalized * 2f, power);
         m_actionNow = true;
     }
-    /// <summary>
-    /// 下弱攻撃
-    /// </summary>
-    /// <param name="power"></param>
     public override void LightAttackD(float power)
     {
         if (m_actionNow) return;
