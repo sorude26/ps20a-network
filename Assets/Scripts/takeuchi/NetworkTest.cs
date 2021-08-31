@@ -17,6 +17,8 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     [SerializeField] Cinemachine.CinemachineTargetGroup targetGroup = null;
     [SerializeField] GameManagerTest managerTest = null;
 
+    string joinRoomName = null;
+
     GameObject m_player;
 
     private void Awake()
@@ -73,10 +75,20 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.JoinRandomRoom();
+            ////////////////////////////////////////////////////////////////////////////////
+            if (joinRoomName == null)
+            {
+                PhotonNetwork.JoinRandomRoom();
+            }
+            else
+            {
+                //PhotonNetwork.JoinRandomRoom();
+                PhotonNetwork.JoinRoom(joinRoomName);
+            }
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// ランダムな名前のルームを作って参加する
     /// </summary>
@@ -85,18 +97,28 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             RoomOptions roomOptions = new RoomOptions();
-            roomOptions.IsVisible = true;   // 誰でも参加できるようにする
-            /* **************************************************
-             * spawPositions の配列長を最大プレイ人数とする。
-             * 無料版では最大20まで指定できる。
-             * MaxPlayers の型は byte なのでキャストしている。
-             * MaxPlayers の型が byte である理由はおそらく1ルームのプレイ人数を255人に制限したいためでしょう。
-             * **************************************************/
-            roomOptions.MaxPlayers = (byte)m_spawnPositions.Length;
-            PhotonNetwork.CreateRoom(null, roomOptions); // ルーム名に null を指定するとランダムなルーム名を付ける
+            if (joinRoomName == null)
+            {
+                roomOptions.IsVisible = true;   // 誰でも参加できるようにする
+                /* **************************************************
+                 * spawPositions の配列長を最大プレイ人数とする。
+                 * 無料版では最大20まで指定できる。
+                 * MaxPlayers の型は byte なのでキャストしている。
+                 * MaxPlayers の型が byte である理由はおそらく1ルームのプレイ人数を255人に制限したいためでしょう。
+                 * **************************************************/
+                roomOptions.MaxPlayers = (byte)m_spawnPositions.Length;
+                PhotonNetwork.CreateRoom(null, roomOptions); // ルーム名に null を指定するとランダムなルーム名を付ける
+            }
+            else
+            {
+                roomOptions.IsVisible = false;
+                roomOptions.MaxPlayers = (byte)m_spawnPositions.Length;
+                PhotonNetwork.CreateRoom(joinRoomName, roomOptions);
+            }
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// 　ルームの人数が最大になるまで待機しておき、最大になったらキャラを生成しゲームを始める
     /// </summary>
@@ -124,6 +146,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// プレイヤーを生成する
     /// </summary>
@@ -139,6 +162,8 @@ public class NetworkTest : MonoBehaviourPunCallbacks
 
 
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// １秒後にカメラターゲットセットを自分と対戦相手でよびだす
     /// </summary>
@@ -151,6 +176,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
 
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// Playerタグのオブジェクトをカメラのターゲットにする
     /// </summary>
@@ -220,8 +246,9 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom");
-        //SpawnPlayer();
+        //SpawnPlayer();////////////////////////////////////////////////////////////////////////////////////////////
         Waiting();
+        
     }
 
     /// <summary>指定した部屋への入室に失敗した時</summary>
