@@ -10,10 +10,12 @@ public class DamageUI : MonoBehaviour
     /// HPゲージのImage
     /// </summary>
     [SerializeField] Image hpGauge;
+
     /// <summary>
     /// 既に受けているダメージの総量
     /// </summary>
     [SerializeField] int currentDamage = 0;
+
     /// <summary>
     /// 既に受けているダメージ総量の限界値
     /// </summary>
@@ -23,21 +25,37 @@ public class DamageUI : MonoBehaviour
     /// キャンバス
     /// </summary>
     [SerializeField] Canvas canvas;
-    
+
+    /// <summary>
+    /// プレイヤーに追従するためのtransform
+    /// </summary>
+    [SerializeField] Transform playerTransform;
+
     private void Start()
     {
         //currentHpをインスペクターで変更した際に対応できるようにここでHPゲージの更新をする
         UpdateHpGauge();
     }
 
+    private void Update()
+    {
+        if (playerTransform != null)
+        {
+            UpdatePosition();
+        }
+    }
+
     /// <summary>
-    /// DamageUI生成時の設定
+    ///  DamageUI生成時の設定
     /// </summary>
-    /// <param name="canvasCamera"></param>
-    public void Setup(Camera canvasCamera)
+    /// <param name="canvasCamera">canvasに設定するcamera</param>
+    /// <param name="playerTransform">UIが追従するplayerのtransform</param>
+    public void Setup(Camera canvasCamera, Transform playerTransform)
     {
         //worldSpaceのcanvasにcameraを設定する
-        canvas.worldCamera = canvasCamera;
+        this.canvas.worldCamera = canvasCamera;
+        //追従するプレイヤーのtransformを設定する
+        this.playerTransform = playerTransform;
     }
 
     /// <summary>
@@ -53,11 +71,21 @@ public class DamageUI : MonoBehaviour
         }
         UpdateHpGauge();
     }
+
     /// <summary>
     /// 既に受けているダメージの量に合わせて、HPゲージを伸ばす
     /// </summary>
     public void UpdateHpGauge()
     {
-        hpGauge.transform.localScale = new Vector3(currentDamage / maxDamage, 1, 1);
+        hpGauge.transform.localScale = new Vector3((float)currentDamage / maxDamage, 1, 1);
+    }
+
+    /// <summary>
+    /// 表示位置をプレイヤーの真上にする
+    /// </summary>
+    public void UpdatePosition()
+    {
+        this.transform.position = playerTransform.position;
+        this.transform.position += new Vector3(0, 1.2f, 0);
     }
 }
