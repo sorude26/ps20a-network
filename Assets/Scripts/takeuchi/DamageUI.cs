@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class DamageUI : MonoBehaviour
 {
     /// <summary>
-    /// HPゲージのImage
+    /// damageゲージのImage
     /// </summary>
-    [SerializeField] Image hpGauge;
+    [SerializeField] Image damageGauge;
 
     /// <summary>
     /// 既に受けているダメージの総量
@@ -34,7 +34,7 @@ public class DamageUI : MonoBehaviour
     private void Start()
     {
         //currentHpをインスペクターで変更した際に対応できるようにここでHPゲージの更新をする
-        UpdateHpGauge();
+        UpdateDamageGauge();
     }
 
     private void Update()
@@ -69,15 +69,15 @@ public class DamageUI : MonoBehaviour
         {
             currentDamage = maxDamage;
         }
-        UpdateHpGauge();
+        UpdateDamageGauge();
     }
 
     /// <summary>
-    /// 既に受けているダメージの量に合わせて、HPゲージを伸ばす
+    /// 既に受けているダメージの量に合わせて、Damageゲージを伸ばす
     /// </summary>
-    public void UpdateHpGauge()
+    public void UpdateDamageGauge()
     {
-        hpGauge.transform.localScale = new Vector3((float)currentDamage / maxDamage, 1, 1);
+        damageGauge.transform.localScale = new Vector3((float)currentDamage / maxDamage, 1, 1);
     }
 
     /// <summary>
