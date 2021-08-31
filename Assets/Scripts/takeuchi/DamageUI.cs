@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 
-public class DamageUI : MonoBehaviour
+public class DamageUI : MonoBehaviour, IPunObservable
 {
     /// <summary>
     /// damageゲージのImage
@@ -87,5 +88,17 @@ public class DamageUI : MonoBehaviour
     {
         this.transform.position = playerTransform.position;
         this.transform.position += new Vector3(0, 1.2f, 0);
+    }
+
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+        }
+        else
+        {
+            transform.position = (Vector3)stream.ReceiveNext();
+        }
     }
 }
