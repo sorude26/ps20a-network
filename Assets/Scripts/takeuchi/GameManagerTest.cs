@@ -19,10 +19,10 @@ public enum EventCodes
     createPlayer = 152
 
 }
-public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
+public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
-    [SerializeField] NetworkTest networkTest = null;
-    static GameManagerTest m_instance;
+    [SerializeField] NetworkManager networkManager = null;
+    static GameManager m_instance;
     PhotonView m_view = null;
 
     public const byte eventCode = 150;
@@ -55,8 +55,8 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 
     int numberOfLivingPlayer = 2;
 
-    GameManagerTest masterGameManager;
-    List<GameManagerTest> gameManagerList = new List<GameManagerTest>();
+    GameManager masterGameManager;
+    List<GameManager> gameManagerList = new List<GameManager>();
 
     private void Awake()
     {
@@ -72,7 +72,7 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// マスター（ホスト）のゲームマネージャーを設定する
     /// </summary>
     /// <param name="masterGameManager">マスターのゲームマネージャー</param>
-    public void SetMasterGameManager(GameManagerTest masterGameManager)
+    public void SetMasterGameManager(GameManager masterGameManager)
     {
         this.masterGameManager = masterGameManager;
     }
@@ -81,7 +81,7 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// 他のプレイヤーのゲームマネージャーを自身のリストに追加する
     /// </summary>
     /// <param name="gameManager_Another"></param>
-    public void AddAnotherGameManager(GameManagerTest gameManager_Another)
+    public void AddAnotherGameManager(GameManager gameManager_Another)
     {
         gameManagerList.Add(gameManager_Another);
         numberOfLivingPlayer++;
@@ -163,10 +163,10 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
                 AnotherPlayerDied();
                 break;
             case (byte)EventCodes.targetSet:
-                networkTest.CameraTargetSet();
+                networkManager.CameraTargetSet();
                 break;
             case (byte)EventCodes.createPlayer:
-                networkTest.SpawnPlayer();
+                networkManager.SpawnPlayer();
                 break;
             default:
                 break;
