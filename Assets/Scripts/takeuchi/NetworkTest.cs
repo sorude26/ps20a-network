@@ -10,14 +10,16 @@ using Photon.Realtime;
 public class NetworkTest : MonoBehaviourPunCallbacks
 {
     /// <summary>プレイヤーのプレハブの名前</summary>
-    [SerializeField] string m_playerPrefabName = "Prefab";
+    [SerializeField] public static string m_playerPrefabName = "Prefab";
     /// <summary>プレイヤーを生成する場所を示すアンカーのオブジェクト</summary>
     [SerializeField] Transform[] m_spawnPositions = default;
 
     [SerializeField] Cinemachine.CinemachineTargetGroup targetGroup = null;
     [SerializeField] GameManagerTest managerTest = null;
 
-    string joinRoomName = null;
+    SceneTransition sceneTransition;
+    public static string m_joinRoomName = null;
+    public static string m_playerName = null;
 
     GameObject m_player;
 
@@ -25,6 +27,13 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     {
         // シーンの自動同期は無効にする（シーン切り替えがない時は意味はない）
         PhotonNetwork.AutomaticallySyncScene = false;
+
+
+        //sceneTransition = FindObjectOfType<SceneTransition>();
+        //if (sceneTransition)
+        //{
+        //    m_joinRoomName = sceneTransition.RoomPass;
+        //}
     }
 
     private void Start()
@@ -76,14 +85,14 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             ////////////////////////////////////////////////////////////////////////////////
-            if (joinRoomName == null)
+            if (m_joinRoomName == null)
             {
                 PhotonNetwork.JoinRandomRoom();
             }
             else
             {
-                //PhotonNetwork.JoinRandomRoom();
-                PhotonNetwork.JoinRoom(joinRoomName);
+                Debug.Log(m_joinRoomName);
+                PhotonNetwork.JoinRoom(m_joinRoomName);
             }
         }
     }
@@ -97,7 +106,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             RoomOptions roomOptions = new RoomOptions();
-            if (joinRoomName == null)
+            if (m_joinRoomName == null)
             {
                 roomOptions.IsVisible = true;   // 誰でも参加できるようにする
                 /* **************************************************
@@ -113,7 +122,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
             {
                 roomOptions.IsVisible = false;
                 roomOptions.MaxPlayers = (byte)m_spawnPositions.Length;
-                PhotonNetwork.CreateRoom(joinRoomName, roomOptions);
+                PhotonNetwork.CreateRoom(m_joinRoomName, roomOptions);
             }
         }
     }
@@ -201,7 +210,8 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     public override void OnConnected()
     {
         Debug.Log("OnConnected");
-        SetMyNickName(System.Environment.UserName + "@" + System.Environment.MachineName);
+        //SetMyNickName(System.Environment.UserName + "@" + System.Environment.MachineName);
+        SetMyNickName(m_playerName);
     }
 
     /// <summary>Photon との接続が切れた時</summary>

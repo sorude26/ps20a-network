@@ -5,10 +5,16 @@ using UnityEngine.UI;
 
 public class InputFieldText : MonoBehaviour
 {
-    [SerializeField] Text text;
-    [SerializeField] InputField inputField;
+    [SerializeField] InputField roomName;
+    [SerializeField] InputField playerName;
+
     public void RoomNameSet()
     {
-        text.text = inputField.text;
+        NetworkTest.m_joinRoomName = roomName.text;
+    }
+
+    public void PlayerNameSet()
+    {
+        NetworkTest.m_playerName = playerName.text;
     }
 }
