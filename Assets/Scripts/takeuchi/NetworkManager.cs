@@ -10,7 +10,7 @@ using Photon.Realtime;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     /// <summary>プレイヤーのプレハブの名前</summary>
-    [SerializeField] public static string m_playerPrefabName = "Prefab";
+    [SerializeField] public string[] m_playerPrefabName;
     /// <summary>プレイヤーを生成する場所を示すアンカーのオブジェクト</summary>
     [SerializeField] Transform[] m_spawnPositions = default;
 
@@ -161,7 +161,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Transform spawnPoint = m_spawnPositions[actorNumber - 1];
 
         //// プレイヤーを生成し、他のクライアントと同期する
-        m_player = PhotonNetwork.Instantiate(m_playerPrefabName, spawnPoint.position, spawnPoint.rotation);
+        m_player = PhotonNetwork.Instantiate(m_playerPrefabName[actorNumber - 1], spawnPoint.position, spawnPoint.rotation);
 
 
     }
