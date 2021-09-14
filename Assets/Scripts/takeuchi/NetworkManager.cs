@@ -15,7 +15,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform[] m_spawnPositions = default;
 
     [SerializeField] Cinemachine.CinemachineTargetGroup targetGroup = null;
-    [SerializeField] GameManager gameManager = null;
+    [SerializeField] GameManegerFight gameManager = null;
 
     SceneTransition sceneTransition;
     public static string m_joinRoomName = null;

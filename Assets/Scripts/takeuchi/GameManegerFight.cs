@@ -19,10 +19,10 @@ public enum EventCodes
     createPlayer = 152
 
 }
-public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
+public class GameManegerFight : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     [SerializeField] NetworkManager networkManager = null;
-    static GameManager m_instance;
+    static GameManegerFight m_instance;
     PhotonView m_view = null;
 
     public const byte eventCode = 150;
@@ -55,8 +55,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     int numberOfLivingPlayer = 2;
 
-    GameManager masterGameManager;
-    List<GameManager> gameManagerList = new List<GameManager>();
+    GameManegerFight masterGameManager;
+    List<GameManegerFight> gameManagerList = new List<GameManegerFight>();
 
     private void Awake()
     {
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
     /// マスター（ホスト）のゲームマネージャーを設定する
     /// </summary>
     /// <param name="masterGameManager">マスターのゲームマネージャー</param>
-    public void SetMasterGameManager(GameManager masterGameManager)
+    public void SetMasterGameManager(GameManegerFight masterGameManager)
     {
         this.masterGameManager = masterGameManager;
     }
@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
     /// 他のプレイヤーのゲームマネージャーを自身のリストに追加する
     /// </summary>
     /// <param name="gameManager_Another"></param>
-    public void AddAnotherGameManager(GameManager gameManager_Another)
+    public void AddAnotherGameManager(GameManegerFight gameManager_Another)
     {
         gameManagerList.Add(gameManager_Another);
         numberOfLivingPlayer++;
@@ -190,9 +190,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
             Debug.Log("ゲームオーバーテキストが設定されていません");
             return;
         }
-        GameObject gameOverText = Instantiate(gameOverTextObject.gameObject);
-        gameOverText.transform.SetParent(canvas.transform);
-        gameOverText.transform.localPosition = gameOverTextPositon;
+        //GameObject gameOverText = Instantiate(gameOverTextObject.gameObject);
+        //gameOverText.transform.SetParent(canvas.transform);
+        //gameOverText.transform.localPosition = gameOverTextPositon;
+        gameOverTextObject.gameObject.SetActive(true);
 
     }
 }
