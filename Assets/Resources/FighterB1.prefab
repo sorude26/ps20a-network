@@ -1100,6 +1100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_punch: {fileID: 7918472025695011924}
   m_stoneThrow: {fileID: 4049910437821853988}
+  m_hitEffect: {fileID: 2462450059562850127, guid: b27e7524ab4610741bde9917ef1818ed,
+    type: 3}
 --- !u!1 &7918472025695011920
 GameObject:
   m_ObjectHideFlags: 0

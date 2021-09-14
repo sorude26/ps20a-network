@@ -34,4 +34,30 @@ public class ActionFighterA : ActionControlBase
         m_stoneThrow.ThrowStone(new Vector2(1, -1).normalized, power);
         m_actionNow = true;
     }
+    /// <summary>
+    /// 上強攻撃
+    /// </summary>
+    /// <param name="power"></param>
+    public override void StrongAttackU(float power)
+    {
+        if (m_actionNow) return;
+        m_punch.SetPower(power);
+        if (m_anim)
+            m_anim.Play("StrongPunchUp");
+        m_rb.AddForce(new Vector2(this.transform.localScale.x, 3).normalized * power * 2f, ForceMode2D.Impulse);
+        m_actionNow = true;
+    }
+    /// <summary>
+    /// 下強攻撃
+    /// </summary>
+    /// <param name="power"></param>
+    public override void StrongAttackD(float power)
+    {
+        if (m_actionNow) return;
+        m_punch.SetPower(power);
+        if (m_anim)
+            m_anim.Play("StrongPunchDown");
+        m_rb.AddForce(new Vector2(this.transform.localScale.x, -3).normalized * power * 2f, ForceMode2D.Impulse);
+        m_actionNow = true;
+    }
 }
