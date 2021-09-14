@@ -15,7 +15,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform[] m_spawnPositions = default;
 
     [SerializeField] Cinemachine.CinemachineTargetGroup targetGroup = null;
-    [SerializeField] GameManagerTest managerTest = null;
+    [SerializeField] GameManager gameManager = null;
 
     SceneTransition sceneTransition;
     public static string m_joinRoomName = null;
@@ -140,7 +140,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsOpen = false;
 
             SpawnPlayer();
-            managerTest.SendEvent(152);
+            gameManager.SendEvent(152);
             StartCoroutine("GameStart");
         }
         else
@@ -175,7 +175,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(1);
         CameraTargetSet();
-        managerTest.SendEvent(151);
+        gameManager.SendEvent(151);
 
     }
 
