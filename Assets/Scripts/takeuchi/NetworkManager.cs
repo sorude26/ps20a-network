@@ -7,7 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 
 
-public class NetworkTest : MonoBehaviourPunCallbacks
+public class NetworkManager : MonoBehaviourPunCallbacks
 {
     /// <summary>プレイヤーのプレハブの名前</summary>
     [SerializeField] public static string m_playerPrefabName = "Prefab";
@@ -28,12 +28,6 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         // シーンの自動同期は無効にする（シーン切り替えがない時は意味はない）
         PhotonNetwork.AutomaticallySyncScene = false;
 
-
-        //sceneTransition = FindObjectOfType<SceneTransition>();
-        //if (sceneTransition)
-        //{
-        //    m_joinRoomName = sceneTransition.RoomPass;
-        //}
     }
 
     private void Start()
