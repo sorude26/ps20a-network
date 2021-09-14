@@ -7,15 +7,19 @@ using Photon.Pun;
 using Photon.Realtime;
 
 
-public class NetworkTest : MonoBehaviourPunCallbacks
+public class NetworkManager : MonoBehaviourPunCallbacks
 {
     /// <summary>プレイヤーのプレハブの名前</summary>
-    [SerializeField] string m_playerPrefabName = "Prefab";
+    [SerializeField] public static string m_playerPrefabName = "Prefab";
     /// <summary>プレイヤーを生成する場所を示すアンカーのオブジェクト</summary>
     [SerializeField] Transform[] m_spawnPositions = default;
 
     [SerializeField] Cinemachine.CinemachineTargetGroup targetGroup = null;
     [SerializeField] GameManagerTest managerTest = null;
+
+    SceneTransition sceneTransition;
+    public static string m_joinRoomName = null;
+    public static string m_playerName = null;
 
     GameObject m_player;
 
@@ -23,6 +27,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     {
         // シーンの自動同期は無効にする（シーン切り替えがない時は意味はない）
         PhotonNetwork.AutomaticallySyncScene = false;
+
     }
 
     private void Start()
@@ -73,10 +78,20 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.JoinRandomRoom();
+            ////////////////////////////////////////////////////////////////////////////////
+            if (m_joinRoomName == null)
+            {
+                PhotonNetwork.JoinRandomRoom();
+            }
+            else
+            {
+                Debug.Log(m_joinRoomName);
+                PhotonNetwork.JoinRoom(m_joinRoomName);
+            }
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// ランダムな名前のルームを作って参加する
     /// </summary>
@@ -85,18 +100,28 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             RoomOptions roomOptions = new RoomOptions();
-            roomOptions.IsVisible = true;   // 誰でも参加できるようにする
-            /* **************************************************
-             * spawPositions の配列長を最大プレイ人数とする。
-             * 無料版では最大20まで指定できる。
-             * MaxPlayers の型は byte なのでキャストしている。
-             * MaxPlayers の型が byte である理由はおそらく1ルームのプレイ人数を255人に制限したいためでしょう。
-             * **************************************************/
-            roomOptions.MaxPlayers = (byte)m_spawnPositions.Length;
-            PhotonNetwork.CreateRoom(null, roomOptions); // ルーム名に null を指定するとランダムなルーム名を付ける
+            if (m_joinRoomName == null)
+            {
+                roomOptions.IsVisible = true;   // 誰でも参加できるようにする
+                /* **************************************************
+                 * spawPositions の配列長を最大プレイ人数とする。
+                 * 無料版では最大20まで指定できる。
+                 * MaxPlayers の型は byte なのでキャストしている。
+                 * MaxPlayers の型が byte である理由はおそらく1ルームのプレイ人数を255人に制限したいためでしょう。
+                 * **************************************************/
+                roomOptions.MaxPlayers = (byte)m_spawnPositions.Length;
+                PhotonNetwork.CreateRoom(null, roomOptions); // ルーム名に null を指定するとランダムなルーム名を付ける
+            }
+            else
+            {
+                roomOptions.IsVisible = false;
+                roomOptions.MaxPlayers = (byte)m_spawnPositions.Length;
+                PhotonNetwork.CreateRoom(m_joinRoomName, roomOptions);
+            }
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// 　ルームの人数が最大になるまで待機しておき、最大になったらキャラを生成しゲームを始める
     /// </summary>
@@ -124,6 +149,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// プレイヤーを生成する
     /// </summary>
@@ -139,6 +165,8 @@ public class NetworkTest : MonoBehaviourPunCallbacks
 
 
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// １秒後にカメラターゲットセットを自分と対戦相手でよびだす
     /// </summary>
@@ -151,6 +179,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
 
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// Playerタグのオブジェクトをカメラのターゲットにする
     /// </summary>
@@ -175,7 +204,8 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     public override void OnConnected()
     {
         Debug.Log("OnConnected");
-        SetMyNickName(System.Environment.UserName + "@" + System.Environment.MachineName);
+        //SetMyNickName(System.Environment.UserName + "@" + System.Environment.MachineName);
+        SetMyNickName(m_playerName);
     }
 
     /// <summary>Photon との接続が切れた時</summary>
@@ -220,8 +250,9 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom");
-        //SpawnPlayer();
+        //SpawnPlayer();////////////////////////////////////////////////////////////////////////////////////////////
         Waiting();
+        
     }
 
     /// <summary>指定した部屋への入室に失敗した時</summary>
