@@ -46,6 +46,6 @@ public class PlayerDeath : MonoBehaviour
     /// </summary>
     void GameOver()
     {
-        GameManager.GameEvent(EventCodes.IDied);
+        GameManegerFight.GameEvent(EventCodes.IDied);
     }
 }

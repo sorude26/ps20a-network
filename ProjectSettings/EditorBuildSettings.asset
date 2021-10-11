@@ -17,10 +17,13 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/BattleScene.unity
+    guid: 63f4d3cabbe211f41a1790e13b42ba98
   - enabled: 0
     path: Assets/Scenes/Takeuchi.unity
     guid: 363eb18b6f447104c9484cca0753e253
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FighterTest.unity
     guid: f2245698a0af78246a1887c7b046c6d5
   m_configObjects: {}
