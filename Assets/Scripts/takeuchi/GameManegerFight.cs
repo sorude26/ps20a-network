@@ -14,12 +14,15 @@ public enum EventCodes
     /// <summary>
     /// playerが死んだ時のコード
     /// </summary>
-    IDied = 150
+    IDied = 150,
+    targetSet = 151,
+    createPlayer = 152
 
 }
-public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
+public class GameManegerFight : MonoBehaviourPunCallbacks, IOnEventCallback
 {
-    static GameManagerTest m_instance;
+    [SerializeField] NetworkManager networkManager = null;
+    static GameManegerFight m_instance;
     PhotonView m_view = null;
 
     public const byte eventCode = 150;
@@ -52,8 +55,8 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
 
     int numberOfLivingPlayer = 2;
 
-    GameManagerTest masterGameManager;
-    List<GameManagerTest> gameManagerList = new List<GameManagerTest>();
+    GameManegerFight masterGameManager;
+    List<GameManegerFight> gameManagerList = new List<GameManegerFight>();
 
     private void Awake()
     {
@@ -69,7 +72,7 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// マスター（ホスト）のゲームマネージャーを設定する
     /// </summary>
     /// <param name="masterGameManager">マスターのゲームマネージャー</param>
-    public void SetMasterGameManager(GameManagerTest masterGameManager)
+    public void SetMasterGameManager(GameManegerFight masterGameManager)
     {
         this.masterGameManager = masterGameManager;
     }
@@ -78,7 +81,7 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// 他のプレイヤーのゲームマネージャーを自身のリストに追加する
     /// </summary>
     /// <param name="gameManager_Another"></param>
-    public void AddAnotherGameManager(GameManagerTest gameManager_Another)
+    public void AddAnotherGameManager(GameManegerFight gameManager_Another)
     {
         gameManagerList.Add(gameManager_Another);
         numberOfLivingPlayer++;
@@ -137,6 +140,16 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         PhotonNetwork.RaiseEvent(eventCode, null, raiseEventOptions, SendOptions.SendReliable);
     }
+    /// <summary>
+    /// イベント送信処理
+    /// </summary>
+    /// <param name="eventCode">コード</param>
+    /// <param name="data">データ</param>
+    public void SendEvent(byte eventCode, Object data)
+    {
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(eventCode, data, raiseEventOptions, SendOptions.SendReliable);
+    }
 
     /// <summary>
     /// イベント受信
@@ -144,9 +157,25 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
     /// <param name="e">受け取るイベント</param>
     public void OnEvent(EventData e)
     {
+        switch (e.Code)
+        {
+            case (byte)EventCodes.IDied:
+                AnotherPlayerDied();
+                break;
+            case (byte)EventCodes.targetSet:
+                networkManager.CameraTargetSet();
+                break;
+            case (byte)EventCodes.createPlayer:
+                networkManager.SpawnPlayer();
+                break;
+            default:
+                break;
+        }
         if ((byte)e.Code == (byte)EventCodes.IDied)     //こっちは死んだよって言われたら
         {
-            AnotherPlayerDied();
+        }
+        else if (e.Code == (byte)EventCodes.targetSet)
+        {
         }
     }
 
@@ -161,10 +190,10 @@ public class GameManagerTest : MonoBehaviourPunCallbacks, IOnEventCallback
             Debug.Log("ゲームオーバーテキストが設定されていません");
             return;
         }
-        GameObject gameOverText = Instantiate(gameOverTextObject.gameObject);
-        gameOverText.transform.SetParent(canvas.transform);
-        gameOverText.transform.localPosition = gameOverTextPositon;
+        //GameObject gameOverText = Instantiate(gameOverTextObject.gameObject);
+        //gameOverText.transform.SetParent(canvas.transform);
+        //gameOverText.transform.localPosition = gameOverTextPositon;
+        gameOverTextObject.gameObject.SetActive(true);
 
     }
-
 }
