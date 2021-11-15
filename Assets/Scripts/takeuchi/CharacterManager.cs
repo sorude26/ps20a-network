@@ -7,17 +7,17 @@ using Photon.Realtime;
 
 public class CharacterManager : MonoBehaviourPunCallbacks // Photon Realtime 用のクラスを継承する
 {
-    /// <summary>プレイヤーのプレハブの名前</summary>
-    [SerializeField] public static string m_playerPrefabName = "Prefab";
+    //このスクリプト要らない
+
     /// <summary>プレイヤーを生成する場所を示すアンカーのオブジェクト</summary>
     //[SerializeField] Transform[] m_spawnPositions = default;
 
     //string playerPrefabName;
 
    
-    public static void SetPrefabName(string name)
+    public static void SetPrefabName(int number)
     {
-        m_playerPrefabName = name;
+        NetworkManager.m_chatacterNum = number;
     }
 
     //    private void Awake()

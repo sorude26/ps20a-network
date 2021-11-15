@@ -5,9 +5,9 @@ using UnityEngine;
 public class CharacterSelect : MonoBehaviour
 {
 
-    public void Select(string characterName)
+    public void Select(int characterNumber)
     {
-        CharacterManager.SetPrefabName(characterName);
-        Debug.Log(CharacterManager.m_playerPrefabName);
+        NetworkManager.m_chatacterNum = characterNumber;
+        Debug.Log(NetworkManager.m_chatacterNum);
     }
 }

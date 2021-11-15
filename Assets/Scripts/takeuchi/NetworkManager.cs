@@ -9,6 +9,8 @@ using Photon.Realtime;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    /// <summary>プレイヤーのプレハブの番号
+    public static int m_chatacterNum = 0;
     /// <summary>プレイヤーのプレハブの名前</summary>
     [SerializeField] public string[] m_playerPrefabName;
     /// <summary>プレイヤーを生成する場所を示すアンカーのオブジェクト</summary>
@@ -157,8 +159,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         // プレイヤーをどこに spawn させるか決める
         int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;    // 自分の ActorNumber を取得する。なお ActorNumber は「1から」入室順に振られる。
-        Debug.Log("My ActorNumber: " + actorNumber);
-        Transform spawnPoint = m_spawnPositions[actorNumber - 1];
+        Debug.Log("My ActorNumber: " + m_chatacterNum);
+        Transform spawnPoint = m_spawnPositions[m_chatacterNum];
 
         //// プレイヤーを生成し、他のクライアントと同期する
         m_player = PhotonNetwork.Instantiate(m_playerPrefabName[actorNumber - 1], spawnPoint.position, spawnPoint.rotation);
