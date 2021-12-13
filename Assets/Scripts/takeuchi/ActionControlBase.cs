@@ -9,6 +9,7 @@ public class ActionControlBase : MonoBehaviour
 {
     [SerializeField] protected PunchController m_punch = null;
     [SerializeField] protected StoneThrowing m_stoneThrow = null;
+    [SerializeField] protected GameObject m_hitEffect = null;
     protected Rigidbody2D m_rb = null;
     protected Animator m_anim = null;
     protected bool m_actionNow;
@@ -136,6 +137,10 @@ public class ActionControlBase : MonoBehaviour
     public virtual void Hit(Vector3 attackVector)
     {
         m_rb.AddForce(attackVector * 2, ForceMode2D.Impulse);
+        if (m_hitEffect)
+        {
+            Instantiate(m_hitEffect).transform.position = transform.position;
+        }
     }
     /// <summary>
     /// アニメーション再生終了時に呼ぶ
