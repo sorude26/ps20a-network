@@ -16,6 +16,7 @@ public class ResultManager : MonoBehaviour
     int winnerNumber = default;
     [SerializeField] Animator animator;
     [SerializeField] GameObject continueButton;
+    [SerializeField] GameObject endButton;
 
     public void Setup(bool result)
     {
@@ -52,5 +53,6 @@ public class ResultManager : MonoBehaviour
             yield return null;
         }
         continueButton.SetActive(true);
+        endButton.SetActive(true);
     }
 }
